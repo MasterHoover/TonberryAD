@@ -12,11 +12,10 @@ public class _GameManager : MonoBehaviour
 	private CinematicPlayer cinematicPlayer;
 	private LevelStateMachine levelStateMachine;
 
-	public delegate void LevelLoadedHandler (object source, System.EventArgs e);
-	public event LevelLoadedHandler LevelLoaded;
+	public delegate void SceneWasSetupHandler (object source, System.EventArgs e);
+	public event SceneWasSetupHandler SceneWasSetup;
 
-	public delegate void LevelLoadingHandler (object source, System.EventArgs e);
-	public event LevelLoadingHandler LevelLoading;
+	private bool sceneIsLoading;
 
 	void Awake ()
 	{
@@ -25,20 +24,24 @@ public class _GameManager : MonoBehaviour
 
 	void Start ()
 	{
-		InitialSetup ();
+		SetupScene ();
 	}
 
-	void OnLevelWasLoaded (int level)
+	void OnEnable ()
 	{
-		FetchAvatar ();
-		if (cinematicPlayer == null)
-		{
-			Debug.Log ("CinematicPlayer does not exist");
-		}
-		cinematicPlayer.FetchSceneCinematics ();
-		levelStateMachine.ActivateAutomaticStates ();
-		levelStateMachine.FetchAllAndPlayActiveStates ();
-		OnLevelLoaded (new GameScene (SceneManager.GetActiveScene ().name, spawnIndex));
+		SceneManager.sceneLoaded += OnSceneWasLoaded;
+	}
+
+	void OnDisable ()
+	{
+		SceneManager.sceneLoaded -= OnSceneWasLoaded;	
+	}
+
+	void OnSceneWasLoaded (Scene scene, LoadSceneMode mode)
+	{
+		SetupScene ();
+		sceneIsLoading = false;
+		OnSceneWasSetup (new GameScene (SceneManager.GetActiveScene ().name, spawnIndex));
 	}
 
 	private void Initialize ()
@@ -57,38 +60,33 @@ public class _GameManager : MonoBehaviour
 		}
 	}
 
-	void Update ()
+	private void SetupScene ()
 	{
-		if (Input.GetKeyDown (KeyCode.KeypadMultiply))
+		gameAvatar = FetchAvatarInScene ();
+		if (gameAvatar == null)
 		{
-			cinematicPlayer.PlayCinematic (new TAction_PlayCinematic ("Complex"));
+			gameAvatar = SpawnAvatar ();
 		}
-		else if (Input.GetKeyDown (KeyCode.KeypadMinus))
-		{
-			cinematicPlayer.PlayCinematic (new TAction_PlayCinematic ("Complex"));
-		}
-	}
-
-	private void InitialSetup ()
-	{
-		FetchAvatar ();
 		cinematicPlayer.FetchSceneCinematics ();
 		levelStateMachine.ActivateAutomaticStates ();
 		levelStateMachine.FetchAllAndPlayActiveStates ();
-		if (gameAvatar == null)
-		{
-			SpawnPoint[] spawnPoints = GameObject.FindObjectsOfType<SpawnPoint> ();
-			for (int i = 0; i < spawnPoints.Length; i++)
-			{
-				if (spawnPoints[i].id == 0)
-				{
-					SpawnAvatar (spawnPoints[i].transform.position, spawnPoints[i].transform.rotation);
-					spawnPoints[i].cameraView.Activate ();
-				}
-			}
-		}
 	}
 
+	public ControllableSprite SpawnAvatar (int spawnIndex)
+	{
+		SpawnPoint spawnPoint = FetchSpawnPointInScene (spawnIndex);
+		if (spawnPoint != null)
+		{
+			spawnPoint.cameraView.Activate ();
+			return SpawnAvatar (spawnPoint.transform.position, spawnPoint.transform.rotation);
+		}
+		else
+		{
+			Debug.LogWarning ("_GameManager/SpawnAvatar (int): No spawnPoint of ID [" + spawnIndex + "] was found in the current scene.");
+		}
+		return null;
+	}
+		
 	public ControllableSprite SpawnAvatar (Vector3 position, Quaternion rotation)
 	{
 		if (gameAvatar != null)
@@ -99,18 +97,51 @@ public class _GameManager : MonoBehaviour
 		return gameAvatar;
 	}
 
-	private void FetchAvatar ()
+	public ControllableSprite SpawnAvatar ()
+	{
+		SpawnPoint[] spawnPoints = GameObject.FindObjectsOfType<SpawnPoint> ();
+		for (int i = 0; i < spawnPoints.Length; i++)
+		{
+			if (spawnPoints[i].id == spawnIndex)
+			{
+				spawnPoints [i].cameraView.Activate ();
+				return SpawnAvatar (spawnPoints [i].transform.position, spawnPoints [i].transform.rotation);
+			}
+		}
+		return null;
+	}
+
+	private ControllableSprite FetchAvatarInScene ()
 	{
 		GameObject gObject = GameObject.FindGameObjectWithTag ("Player");
 		if (gObject != null)
 		{
-		 	gameAvatar = gObject.GetComponent<ControllableSprite> ();
+		 	return gObject.GetComponent<ControllableSprite> ();
 		}
+		return null;
+	}
+
+	private SpawnPoint[] FetchSpawnPointsInScene ()
+	{
+		return GameObject.FindObjectsOfType<SpawnPoint> ();
+	}
+
+	private SpawnPoint FetchSpawnPointInScene (int spawnID)
+	{
+		SpawnPoint[] spawnPoints = GameObject.FindObjectsOfType<SpawnPoint> ();
+		for (int i = 0; i < spawnPoints.Length; i++)
+		{
+			if (spawnPoints [i].id == spawnID)
+			{
+				return spawnPoints [i];
+			}
+		}
+		return null;
 	}
 
 	public void LoadScene (string sceneName)
 	{
-		LoadScene (sceneName, 0, false);
+		LoadScene (sceneName, spawnIndex, false);
 	}
 
 	public void LoadScene (string sceneName, int spawnIndex)
@@ -121,9 +152,9 @@ public class _GameManager : MonoBehaviour
 	public void LoadScene (string sceneName, int spawnIndex, bool fade)
 	{
 		this.spawnIndex = spawnIndex;
-		Debug.Log ("Spawn index is now " + this.spawnIndex);
 		if (!fade)
 		{
+			sceneIsLoading = true;
 			SceneManager.LoadScene (sceneName);
 		}
 		else
@@ -136,7 +167,7 @@ public class _GameManager : MonoBehaviour
 	{
 		return new Cinematic (new TAction[][] 
 			{ new TAction[1] { new TAction_FadeIn () }, 
-				new TAction[1] { new TAction_LoadScene (sceneName, spawnIndex) }, 
+				new TAction[1] { new TAction_LoadScene (sceneName) }, 
 				new TAction[1] { new TAction_FadeOut ()}});
 	}
 
@@ -154,14 +185,15 @@ public class _GameManager : MonoBehaviour
 		return null;
 	}
 
-	void OnLevelLoaded (GameScene e)
+	void OnSceneWasSetup (GameScene e)
 	{
-		if (LevelLoaded != null)
+		if (SceneWasSetup != null)
 		{
-			LevelLoaded (this, e);
+			SceneWasSetup (this, e);
 		}
 	}
 
+	/*
 	void OnLevelLoading (GameScene e)
 	{
 		if (LevelLoading != null)
@@ -169,6 +201,7 @@ public class _GameManager : MonoBehaviour
 			LevelLoading (this, e);
 		}
 	}
+	*/
 
 	public static _GameManager Instance
 	{
@@ -203,5 +236,10 @@ public class _GameManager : MonoBehaviour
 	public int SpawnIndex
 	{
 		get{return spawnIndex;}
+	}
+
+	public bool SceneIsLoading
+	{
+		get{ return sceneIsLoading; }
 	}
 }

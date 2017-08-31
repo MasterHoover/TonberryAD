@@ -171,7 +171,6 @@ public class SpriteAnimationInterface : MonoBehaviour
 		}
 		else
 		{
-			Debug.LogWarning ("SpriteAnimatorController[" + name + "]/GetNameFromHash (int) : hash[" + hash + "] is unknown. Returning a blank string.");
 			return "";
 		}
 	}
@@ -180,7 +179,11 @@ public class SpriteAnimationInterface : MonoBehaviour
 	{
 		get
 		{
-			return GetNameFromHash (animator.GetCurrentAnimatorStateInfo (0).shortNameHash);
+			if (!_GameManager.Instance.SceneIsLoading)
+			{
+				return GetNameFromHash (animator.GetCurrentAnimatorStateInfo (0).shortNameHash);
+			} 
+			return GetNameFromHash (0);
 		}
 	}
 		

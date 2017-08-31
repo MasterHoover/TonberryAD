@@ -1,0 +1,35 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TonberryAD", "Assembly-CSharp.csproj", "{4CE7294C-6C99-E9E4-94B1-2228242497C2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TonberryAD", "Assembly-CSharp-firstpass.csproj", "{8D924524-19DA-A0EA-64EC-725393ED1CAF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TonberryAD", "Assembly-CSharp-Editor.csproj", "{04F90148-2601-8EF0-6435-3C43999A6739}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{4CE7294C-6C99-E9E4-94B1-2228242497C2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4CE7294C-6C99-E9E4-94B1-2228242497C2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4CE7294C-6C99-E9E4-94B1-2228242497C2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4CE7294C-6C99-E9E4-94B1-2228242497C2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8D924524-19DA-A0EA-64EC-725393ED1CAF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8D924524-19DA-A0EA-64EC-725393ED1CAF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8D924524-19DA-A0EA-64EC-725393ED1CAF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8D924524-19DA-A0EA-64EC-725393ED1CAF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{04F90148-2601-8EF0-6435-3C43999A6739}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{04F90148-2601-8EF0-6435-3C43999A6739}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{04F90148-2601-8EF0-6435-3C43999A6739}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{04F90148-2601-8EF0-6435-3C43999A6739}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(MonoDevelopProperties) = preSolution
+		StartupItem = Assembly-CSharp.csproj
+	EndGlobalSection
+EndGlobal

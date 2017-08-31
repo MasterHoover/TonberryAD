@@ -30,9 +30,10 @@ public class TestChangeLevel : MonoBehaviour
 			SceneManager.LoadScene ("TestScripts_V02");
 		}
 	}
-
+	/*
 	void OnLevelWasLoaded (int level)
 	{
 		Debug.Log ("OnLevelWasLoaded");
 	}
+	*/
 }

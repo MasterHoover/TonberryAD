@@ -1,4 +1,4 @@
 sceneSetups:
-- path: Assets/Scenes/Dev/SpriteMovement.unity
+- path: Assets/Scenes/Dev/SpawnAndViews.unity
   isLoaded: 1
   isActive: 1

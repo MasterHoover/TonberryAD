@@ -75,10 +75,6 @@ public class LevelStateMachine : MonoBehaviour
 				}
 			}
 		}
-		else
-		{
-			Debug.LogWarning ("Index is not found");
-		}
 	}
 
 	private int IndexOfLevelName (string levelName)

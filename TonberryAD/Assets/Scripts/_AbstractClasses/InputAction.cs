@@ -3,19 +3,21 @@ using System.Collections;
 
 public abstract class InputAction : MonoBehaviour 
 {
+	public bool useKeyboard = true;
 	public string inputName;
+	public KeyCode key;
 
 	void Update ()
 	{
-		if (Input.GetButtonDown (inputName))
+		if (Input.GetButtonDown (inputName) || useKeyboard && Input.GetKeyDown (key))
 		{
 			ButtonDownAction ();
 		}
-		if (Input.GetButtonUp (inputName))
+		if (Input.GetButtonDown (inputName) || useKeyboard && Input.GetKeyUp (key))
 		{
 			ButtonUpAction ();
 		}
-		if (Input.GetButton (inputName))
+		if (Input.GetButton (inputName) || useKeyboard && Input.GetKey (key))
 		{
 			ButtonAction ();
 		}

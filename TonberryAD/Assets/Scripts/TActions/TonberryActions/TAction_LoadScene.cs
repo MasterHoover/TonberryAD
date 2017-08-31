@@ -26,8 +26,8 @@ public class TAction_LoadScene : TAction
 
 	protected override void Initialize ()
 	{
-		_GameManager.Instance.LevelLoaded += OnLevelLoaded;
-		_GameManager.Instance.LoadScene (sceneName, spawnId, fade);
+		_GameManager.Instance.SceneWasSetup += OnLevelLoaded;
+		_GameManager.Instance.LoadScene (sceneName);
 	}
 
 	public void OnLevelLoaded (object source, EventArgs e)
