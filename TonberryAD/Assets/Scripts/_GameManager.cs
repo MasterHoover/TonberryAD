@@ -1,18 +1,20 @@
 ﻿using UnityEngine;
 using System.Collections;
 using UnityEngine.SceneManagement;
+using UnityStandardAssets.ImageEffects;
 
 public class _GameManager : MonoBehaviour
 {
 	public ControllableSprite prefab_gameAvatar;
 	private static _GameManager instance;
+	private _GameManagerDB db;
+	public GameObject empty;
+	public Texture2D black;
 	private ControllableSprite gameAvatar;
 	private CameraPanner camPanner;
 	private int spawnIndex;
-	private CinematicPlayer cinematicPlayer;
-	private LevelStateMachine levelStateMachine;
 
-	public delegate void SceneWasSetupHandler (object source, System.EventArgs e);
+	public delegate void SceneWasSetupHandler (GameScene gameScene);
 	public event SceneWasSetupHandler SceneWasSetup;
 
 	private bool sceneIsLoading;
@@ -37,6 +39,53 @@ public class _GameManager : MonoBehaviour
 		SceneManager.sceneLoaded -= OnSceneWasLoaded;	
 	}
 
+	public ScreenOverlay CreateCamOverlay ()
+	{
+		ScreenOverlay so = Camera.main.GetComponent<ScreenOverlay> ();
+		if (so == null)
+		{
+			so = Camera.main.GetComponent<ScreenOverlay> ();
+		}
+		so.blendMode = ScreenOverlay.OverlayBlendMode.AlphaBlend;
+		so.texture = black;
+		so.intensity = 0f;
+		return so;
+	}
+
+	public void LoadScene (string name)
+	{
+		sceneIsLoading = true;
+		SceneManager.LoadScene (name);
+	}
+
+	public void LoadScene (string name, int spawnID)
+	{
+		this.spawnIndex = spawnID;
+		LoadScene (name);
+	}
+
+	public void LoadSceneWithFading (string name, int index)
+	{
+		Cutscene cs = db.changeSceneWithFading;
+		((Action_ChangeScene)cs.actions [1]).sceneName = name;
+		LaunchCutscene (cs);
+	}
+
+	public Cutscene CreateCutscene (Action action)
+	{
+		Action[] actions = new Action[1];
+		actions [0] = action;
+		return CreateCutscene (actions);
+	}
+
+	public Cutscene CreateCutscene (Action[] actions)
+	{
+		GameObject empty = Instantiate<GameObject> (this.empty);
+		Cutscene cs = empty.AddComponent<Cutscene> ();
+		cs.actions = actions;
+		return cs;
+	}
+
 	void OnSceneWasLoaded (Scene scene, LoadSceneMode mode)
 	{
 		SetupScene ();
@@ -50,9 +99,8 @@ public class _GameManager : MonoBehaviour
 		{
 			instance = this;
 			DontDestroyOnLoad (gameObject);
+			db = GetComponent<_GameManagerDB> ();
 			camPanner = GetComponent<CameraPanner> ();
-			cinematicPlayer = GetComponent<CinematicPlayer> ();
-			levelStateMachine = GetComponent<LevelStateMachine> ();
 		}
 		else
 		{
@@ -67,9 +115,6 @@ public class _GameManager : MonoBehaviour
 		{
 			gameAvatar = SpawnAvatar ();
 		}
-		cinematicPlayer.FetchSceneCinematics ();
-		levelStateMachine.ActivateAutomaticStates ();
-		levelStateMachine.FetchAllAndPlayActiveStates ();
 	}
 
 	public ControllableSprite SpawnAvatar (int spawnIndex)
@@ -139,38 +184,6 @@ public class _GameManager : MonoBehaviour
 		return null;
 	}
 
-	public void LoadScene (string sceneName)
-	{
-		LoadScene (sceneName, spawnIndex, false);
-	}
-
-	public void LoadScene (string sceneName, int spawnIndex)
-	{
-		LoadScene (sceneName, spawnIndex, false);
-	}
-
-	public void LoadScene (string sceneName, int spawnIndex, bool fade)
-	{
-		this.spawnIndex = spawnIndex;
-		if (!fade)
-		{
-			sceneIsLoading = true;
-			SceneManager.LoadScene (sceneName);
-		}
-		else
-		{
-			cinematicPlayer.PlayCinematic ("ChangeScene[" + sceneName + "] transition", ChangeSceneTransition (sceneName));
-		}
-	}
-
-	private Cinematic ChangeSceneTransition (string sceneName)
-	{
-		return new Cinematic (new TAction[][] 
-			{ new TAction[1] { new TAction_FadeIn () }, 
-				new TAction[1] { new TAction_LoadScene (sceneName) }, 
-				new TAction[1] { new TAction_FadeOut ()}});
-	}
-
 	private SpawnPoint FindSpawnPoint (int spawnIndex)
 	{
 		SpawnPoint[] spawnPoints = GameObject.FindObjectsOfType<SpawnPoint> ();
@@ -189,19 +202,24 @@ public class _GameManager : MonoBehaviour
 	{
 		if (SceneWasSetup != null)
 		{
-			SceneWasSetup (this, e);
+			SceneWasSetup (e);
 		}
 	}
 
-	/*
-	void OnLevelLoading (GameScene e)
+	public void LaunchCutscene (Cutscene c)
 	{
-		if (LevelLoading != null)
+		CutscenePlayer cp = gameObject.AddComponent<CutscenePlayer> ();
+		Cutscene cClone = Instantiate<Cutscene> (c);
+		cClone.transform.parent = transform;
+		Action[] clones = new Action[c.actions.Length];
+		for (int i = 0; i < c.actions.Length; i++)
 		{
-			LevelLoading (this, e);
+			clones [i] = Instantiate<Action> (c.actions [i]);
+			clones [i].transform.parent = cClone.transform;
 		}
+		cClone.actions = clones;
+		cp.Launch (cClone);
 	}
-	*/
 
 	public static _GameManager Instance
 	{
@@ -218,19 +236,9 @@ public class _GameManager : MonoBehaviour
 		get{return camPanner;}
 	}
 
-	public CinematicPlayer CinematicPlayer
-	{
-		get{return cinematicPlayer;}
-	}
-
 	public string LevelName
 	{
 		get{return SceneManager.GetActiveScene ().name;}
-	}
-
-	public LevelStateMachine LevelStateMachine
-	{
-		get{return levelStateMachine;}
 	}
 
 	public int SpawnIndex

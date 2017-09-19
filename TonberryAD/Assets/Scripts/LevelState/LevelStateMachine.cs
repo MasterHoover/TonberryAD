@@ -16,22 +16,27 @@ public class LevelStateMachine : MonoBehaviour
 		}
 	}
 
-	public void FetchAllAndPlayActiveStates ()
+	// Essentially plays every states in the scene. Usually called by the manager after a scene is loaded.
+	public void FetchAllAndPlayActiveStates () 
 	{
 		FetchSceneLevelState ();
-		string levelName = _GameManager.Instance.LevelName;
-		LaunchAllStateEvents (levelName);
+		LaunchActiveStates ();
 	}
-
+		
+	// Stores every current levelState (those in the scene). This variable only store the levelStates present in the current scene.
 	public void FetchSceneLevelState ()
 	{
 		sceneLevelStates = GameObject.FindObjectsOfType<LevelState> ();
 	}
 
+	// When a levelState is activated, to trigger the cinematic with label "label" when scene "levelName" is loaded
+	// Take note that the activeLevelStates is dynamic, meaning when it encounters a new scene, it will automatically add it.
 	public void ActivateLevelState (string levelName, string label)
 	{
 		int index = IndexOfLevelName (levelName);
-		if (index == -1)
+
+		// Check if a LevelStateInfo with the levelName is already created. If not, it is automatically added.
+		if (index == -1) 
 		{
 			activeLevelStates.Add (new LevelStateInfo (levelName));
 			index = IndexOfLevelName (levelName);
@@ -39,6 +44,7 @@ public class LevelStateMachine : MonoBehaviour
 		activeLevelStates[index].AddState (label);
 	}
 
+	// The reverse of activating it. We want to stop the state to be in effect.
 	public void DeactivateLevelState (string levelName, string label)
 	{
 		int index = IndexOfLevelName (levelName);
@@ -52,7 +58,7 @@ public class LevelStateMachine : MonoBehaviour
 		}
 	}
 
-	public void LaunchAllStateEvents (string levelName)
+	public void LaunchActiveStates (string levelName)
 	{
 		int index = IndexOfLevelName (levelName);
 		if (index > -1)
@@ -69,12 +75,16 @@ public class LevelStateMachine : MonoBehaviour
 					{
 						foundIt = true;
 						Debug.Log ("Playing [" + sceneLevelStates[j].label + "] State.");
-						_GameManager.Instance.CinematicPlayer.PlayCinematic (sceneLevelStates[j].cinematicLabel);
-
 					}
 				}
 			}
 		}
+	}
+
+	// Of current scene
+	public void LaunchActiveStates ()
+	{
+		LaunchActiveStates (_GameManager.Instance.LevelName);
 	}
 
 	private int IndexOfLevelName (string levelName)
@@ -90,7 +100,7 @@ public class LevelStateMachine : MonoBehaviour
 	}
 
 	[System.Serializable]
-	public class LevelStateInfo
+	public class LevelStateInfo // LevelStateInfos saves every states for every levels
 	{
 		private string levelName;
 		private List<string> states = new List<string> ();

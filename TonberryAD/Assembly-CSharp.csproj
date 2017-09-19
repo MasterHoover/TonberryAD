@@ -22,7 +22,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>Temp\bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE;UNITY_5_3_OR_NEWER;UNITY_5_4_OR_NEWER;UNITY_5_5_OR_NEWER;UNITY_5_6_OR_NEWER;UNITY_2017_1_OR_NEWER;UNITY_2017_1_0;UNITY_2017_1;UNITY_2017;ENABLE_AUDIO;ENABLE_CACHING;ENABLE_CLOTH;ENABLE_DUCK_TYPING;ENABLE_GENERICS;ENABLE_PVR_GI;ENABLE_MICROPHONE;ENABLE_MULTIPLE_DISPLAYS;ENABLE_PHYSICS;ENABLE_RUNTIME_NAVMESH_BUILDING;ENABLE_SPRITERENDERER_FLIPPING;ENABLE_SPRITES;ENABLE_TERRAIN;ENABLE_RAKNET;ENABLE_DIRECTOR;ENABLE_UNET;ENABLE_LZMA;ENABLE_UNITYEVENTS;ENABLE_WEBCAM;ENABLE_WWW;ENABLE_CLOUD_SERVICES_COLLAB;ENABLE_CLOUD_SERVICES_COLLAB_SOFTLOCKS;ENABLE_CLOUD_SERVICES_ADS;ENABLE_CLOUD_HUB;ENABLE_CLOUD_PROJECT_ID;ENABLE_CLOUD_SERVICES_USE_WEBREQUEST;ENABLE_CLOUD_SERVICES_UNET;ENABLE_CLOUD_SERVICES_BUILD;ENABLE_CLOUD_LICENSE;ENABLE_WEBSOCKET_CLIENT;ENABLE_DIRECTOR_AUDIO;ENABLE_TIMELINE;ENABLE_EDITOR_METRICS;ENABLE_EDITOR_METRICS_CACHING;ENABLE_NATIVE_ARRAY;ENABLE_SPRITE_MASKING;INCLUDE_DYNAMIC_GI;INCLUDE_GI;ENABLE_MONO_BDWGC;PLATFORM_SUPPORTS_MONO;RENDER_SOFTWARE_CURSOR;INCLUDE_PUBNUB;ENABLE_PLAYMODE_TESTS_RUNNER;ENABLE_VIDEO;ENABLE_RMGUI;ENABLE_CUSTOM_RENDER_TEXTURE;ENABLE_STYLE_SHEETS;UNITY_STANDALONE_WIN;UNITY_STANDALONE;ENABLE_SUBSTANCE;ENABLE_RUNTIME_GI;ENABLE_MOVIES;ENABLE_NETWORK;ENABLE_CRUNCH_TEXTURE_COMPRESSION;ENABLE_UNITYWEBREQUEST;ENABLE_CLOUD_SERVICES;ENABLE_CLOUD_SERVICES_ANALYTICS;ENABLE_CLOUD_SERVICES_PURCHASING;ENABLE_CLOUD_SERVICES_CRASH_REPORTING;ENABLE_EVENT_QUEUE;ENABLE_CLUSTERINPUT;ENABLE_VR;ENABLE_WEBSOCKET_HOST;ENABLE_MONO;NET_2_0_SUBSET;ENABLE_PROFILER;UNITY_ASSERTIONS;UNITY_EDITOR;UNITY_EDITOR_64;UNITY_EDITOR_WIN;ENABLE_NATIVE_ARRAY_CHECKS;UNITY_TEAM_LICENSE</DefineConstants>
+    <DefineConstants>DEBUG;TRACE;UNITY_5_3_OR_NEWER;UNITY_5_4_OR_NEWER;UNITY_5_5_OR_NEWER;UNITY_5_6_OR_NEWER;UNITY_2017_1_OR_NEWER;UNITY_2017_1_1;UNITY_2017_1;UNITY_2017;ENABLE_AUDIO;ENABLE_CACHING;ENABLE_CLOTH;ENABLE_DUCK_TYPING;ENABLE_GENERICS;ENABLE_PVR_GI;ENABLE_MICROPHONE;ENABLE_MULTIPLE_DISPLAYS;ENABLE_PHYSICS;ENABLE_RUNTIME_NAVMESH_BUILDING;ENABLE_SPRITERENDERER_FLIPPING;ENABLE_SPRITES;ENABLE_TERRAIN;ENABLE_RAKNET;ENABLE_DIRECTOR;ENABLE_UNET;ENABLE_LZMA;ENABLE_UNITYEVENTS;ENABLE_WEBCAM;ENABLE_WWW;ENABLE_CLOUD_SERVICES_COLLAB;ENABLE_CLOUD_SERVICES_COLLAB_SOFTLOCKS;ENABLE_CLOUD_SERVICES_ADS;ENABLE_CLOUD_HUB;ENABLE_CLOUD_PROJECT_ID;ENABLE_CLOUD_SERVICES_USE_WEBREQUEST;ENABLE_CLOUD_SERVICES_UNET;ENABLE_CLOUD_SERVICES_BUILD;ENABLE_CLOUD_LICENSE;ENABLE_WEBSOCKET_CLIENT;ENABLE_DIRECTOR_AUDIO;ENABLE_TIMELINE;ENABLE_EDITOR_METRICS;ENABLE_EDITOR_METRICS_CACHING;ENABLE_NATIVE_ARRAY;ENABLE_SPRITE_MASKING;INCLUDE_DYNAMIC_GI;INCLUDE_GI;ENABLE_MONO_BDWGC;PLATFORM_SUPPORTS_MONO;RENDER_SOFTWARE_CURSOR;INCLUDE_PUBNUB;ENABLE_PLAYMODE_TESTS_RUNNER;ENABLE_VIDEO;ENABLE_RMGUI;ENABLE_CUSTOM_RENDER_TEXTURE;ENABLE_STYLE_SHEETS;UNITY_STANDALONE_WIN;UNITY_STANDALONE;ENABLE_SUBSTANCE;ENABLE_RUNTIME_GI;ENABLE_MOVIES;ENABLE_NETWORK;ENABLE_CRUNCH_TEXTURE_COMPRESSION;ENABLE_UNITYWEBREQUEST;ENABLE_CLOUD_SERVICES;ENABLE_CLOUD_SERVICES_ANALYTICS;ENABLE_CLOUD_SERVICES_PURCHASING;ENABLE_CLOUD_SERVICES_CRASH_REPORTING;ENABLE_EVENT_QUEUE;ENABLE_CLUSTERINPUT;ENABLE_VR;ENABLE_WEBSOCKET_HOST;ENABLE_MONO;NET_2_0_SUBSET;ENABLE_PROFILER;UNITY_ASSERTIONS;UNITY_EDITOR;UNITY_EDITOR_64;UNITY_EDITOR_WIN;ENABLE_NATIVE_ARRAY_CHECKS;UNITY_TEAM_LICENSE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <NoWarn>0169</NoWarn>
@@ -55,12 +55,23 @@
      <Compile Include="Assets\Scripts\_AbstractClasses\EventTrigger.cs" />
      <Compile Include="Assets\Scripts\_AbstractClasses\InputAction.cs" />
      <Compile Include="Assets\Scripts\_GameManager.cs" />
+     <Compile Include="Assets\Scripts\_GameManagerDB.cs" />
+     <Compile Include="Assets\Scripts\Action.cs" />
+     <Compile Include="Assets\Scripts\Action\Action_ChangeScene.cs" />
+     <Compile Include="Assets\Scripts\Action\Action_Debug.cs" />
+     <Compile Include="Assets\Scripts\Action\Action_Delay.cs" />
+     <Compile Include="Assets\Scripts\Action\Action_FadeIn.cs" />
+     <Compile Include="Assets\Scripts\Action\Action_FadeOut.cs" />
+     <Compile Include="Assets\Scripts\Action\Action_Sequence.cs" />
+     <Compile Include="Assets\Scripts\Action\Action_Simultaneous.cs" />
      <Compile Include="Assets\Scripts\CameraManager.cs" />
      <Compile Include="Assets\Scripts\CameraPanner.cs" />
      <Compile Include="Assets\Scripts\CameraPosition.cs" />
      <Compile Include="Assets\Scripts\CameraViewInfo.cs" />
      <Compile Include="Assets\Scripts\CollisionDetector.cs" />
      <Compile Include="Assets\Scripts\ControllableSprite.cs" />
+     <Compile Include="Assets\Scripts\Cutscene.cs" />
+     <Compile Include="Assets\Scripts\CutscenePlayer.cs" />
      <Compile Include="Assets\Scripts\EventArgs\GameScene.cs" />
      <Compile Include="Assets\Scripts\Gizmos\BoxGizmos.cs" />
      <Compile Include="Assets\Scripts\Gizmos\CameraPositionGizmos.cs" />
@@ -76,54 +87,15 @@
      <Compile Include="Assets\Scripts\LevelState\LevelStateMachine.cs" />
      <Compile Include="Assets\Scripts\LookAtCamera.cs" />
      <Compile Include="Assets\Scripts\MovementInterface.cs" />
+     <Compile Include="Assets\Scripts\PlayCutsceneTester.cs" />
      <Compile Include="Assets\Scripts\SnapToCollision.cs" />
      <Compile Include="Assets\Scripts\SpawnPoint.cs" />
      <Compile Include="Assets\Scripts\SpriteAnimationHandler.cs" />
      <Compile Include="Assets\Scripts\SpriteAnimationInterface.cs" />
-     <Compile Include="Assets\Scripts\TActions\Cinematic.cs" />
-     <Compile Include="Assets\Scripts\TActions\CinematicMono.cs" />
-     <Compile Include="Assets\Scripts\TActions\CinematicPlayer.cs" />
-     <Compile Include="Assets\Scripts\TActions\CinematicStep.cs" />
-     <Compile Include="Assets\Scripts\TActions\EventArgs\SceneLoadedData.cs" />
-     <Compile Include="Assets\Scripts\TActions\LabeledCinematic.cs" />
-     <Compile Include="Assets\Scripts\TActions\TAction.cs" />
-     <Compile Include="Assets\Scripts\TActions\TActionMono.cs" />
-     <Compile Include="Assets\Scripts\TActions\TActionStep.cs" />
-     <Compile Include="Assets\Scripts\TActions\TonberryActions\Mono\TActionMono_ActivateLevelState.cs" />
-     <Compile Include="Assets\Scripts\TActions\TonberryActions\Mono\TActionMono_Delay.cs" />
-     <Compile Include="Assets\Scripts\TActions\TonberryActions\Mono\TActionMono_DisableAvatarMovement.cs" />
-     <Compile Include="Assets\Scripts\TActions\TonberryActions\Mono\TActionMono_EnableAvatarMovement.cs" />
-     <Compile Include="Assets\Scripts\TActions\TonberryActions\Mono\TActionMono_FadeIn.cs" />
-     <Compile Include="Assets\Scripts\TActions\TonberryActions\Mono\TActionMono_FadeOut.cs" />
-     <Compile Include="Assets\Scripts\TActions\TonberryActions\Mono\TActionMono_LoadScene.cs" />
-     <Compile Include="Assets\Scripts\TActions\TonberryActions\Mono\TActionMono_LogMessage.cs" />
-     <Compile Include="Assets\Scripts\TActions\TonberryActions\Mono\TActionMono_MoveCharacter.cs" />
-     <Compile Include="Assets\Scripts\TActions\TonberryActions\Mono\TActionMono_MoveCharacterFrom.cs" />
-     <Compile Include="Assets\Scripts\TActions\TonberryActions\Mono\TActionMono_MoveGameAvatar.cs" />
-     <Compile Include="Assets\Scripts\TActions\TonberryActions\Mono\TActionMono_MoveGameAvatarFrom.cs" />
-     <Compile Include="Assets\Scripts\TActions\TonberryActions\Mono\TActionMono_PlayCinematic.cs" />
-     <Compile Include="Assets\Scripts\TActions\TonberryActions\Mono\TActionMono_TeleportCharacter.cs" />
-     <Compile Include="Assets\Scripts\TActions\TonberryActions\Mono\TActionMono_TeleportGameAvatar.cs" />
-     <Compile Include="Assets\Scripts\TActions\TonberryActions\TAction_ActivateLevelState.cs" />
-     <Compile Include="Assets\Scripts\TActions\TonberryActions\TAction_Delay.cs" />
-     <Compile Include="Assets\Scripts\TActions\TonberryActions\TAction_DisableAvatarMovement.cs" />
-     <Compile Include="Assets\Scripts\TActions\TonberryActions\TAction_EnableAvatarMovement.cs" />
-     <Compile Include="Assets\Scripts\TActions\TonberryActions\TAction_FadeIn.cs" />
-     <Compile Include="Assets\Scripts\TActions\TonberryActions\TAction_FadeOut.cs" />
-     <Compile Include="Assets\Scripts\TActions\TonberryActions\TAction_LoadScene.cs" />
-     <Compile Include="Assets\Scripts\TActions\TonberryActions\TAction_LogMessage.cs" />
-     <Compile Include="Assets\Scripts\TActions\TonberryActions\TAction_MoveCharacter.cs" />
-     <Compile Include="Assets\Scripts\TActions\TonberryActions\TAction_MoveCharacterFrom.cs" />
-     <Compile Include="Assets\Scripts\TActions\TonberryActions\TAction_MoveGameAvatar.cs" />
-     <Compile Include="Assets\Scripts\TActions\TonberryActions\TAction_MoveGameAvatarFrom.cs" />
-     <Compile Include="Assets\Scripts\TActions\TonberryActions\TAction_PlayCinematic.cs" />
-     <Compile Include="Assets\Scripts\TActions\TonberryActions\TAction_TeleportCharacter.cs" />
-     <Compile Include="Assets\Scripts\TActions\TonberryActions\TAction_TeleportGameAvatar.cs" />
+     <Compile Include="Assets\Scripts\Triggers\Trigger_Action.cs" />
      <Compile Include="Assets\Scripts\Triggers\Trigger_ChangeLevel.cs" />
      <Compile Include="Assets\Scripts\Triggers\Trigger_ChangeView.cs" />
-     <Compile Include="Assets\Scripts\Triggers\Trigger_PlayCinematic.cs" />
-     <Compile Include="Assets\Scripts\Triggers\Trigger_PlayTAction.cs" />
-     <Compile Include="Assets\Scripts\Triggers\Trigger_StartCinematic.cs" />
+     <Compile Include="Assets\Scripts\Triggers\Trigger_Cutscene.cs" />
      <Compile Include="Assets\Scripts\View.cs" />
      <Compile Include="Assets\ZZ_TempAssets\TestChangeLevel.cs" />
      <Compile Include="Assets\ZZZ_Tools\ConvertToNewSpawn.cs" />

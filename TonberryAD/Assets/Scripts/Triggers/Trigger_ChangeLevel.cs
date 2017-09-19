@@ -10,7 +10,7 @@ public class Trigger_ChangeLevel : EventTrigger
 
 	protected override void LaunchEnterEvent (Collider col)
 	{
-		Debug.Log ("[" + name + "]: Changing level. New level: " + levelName + "; SpawnId: " + spawnId);
-		_GameManager.Instance.LoadScene (levelName, spawnId, true);
+		//Debug.Log ("[" + name + "]: Changing level. New level: " + levelName + "; SpawnId: " + spawnId);
+		_GameManager.Instance.LoadSceneWithFading (levelName, spawnId);
 	}
 }
